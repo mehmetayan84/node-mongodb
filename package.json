@@ -4,8 +4,12 @@
   "description": "Basic todo api",
   "main": "index.js",
   "scripts": {
+    "start": "node server/server.js",
     "test": "mocha --timeout=50000 server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'"
+  },
+  "engines": {
+    "node": "9.3.0"
   },
   "author": "Mehmet Ayan",
   "license": "ISC",

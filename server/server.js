@@ -1,6 +1,7 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var {ObjectID} = require('mongodb');
+const _ = require("lodash");
+const express = require('express');
+const bodyParser = require('body-parser');
+const {ObjectID} = require('mongodb');
 
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
@@ -65,6 +66,32 @@ app.delete('/todos/:todoId', (req, res) => {
   })
 
 })
+
+app.patch('/todos/:todoId', (req, res) => {
+  var id = req.params.todoId;
+
+  var body = _.pick(req.body, ['text', 'completed']);
+
+  if(!ObjectID.isValid(id)) {
+      return res.status(404).send();
+  }
+
+  if(typeof body.completed == 'boolean' && body.completed) { //_.isBoolean(body.completed) can be used instead of typeof
+    body.completedAt = new Date().getTime();
+  } else {
+    body.completed = false;
+    body.completedAt = null;
+  }
+
+  Todo.findByIdAndUpdate(id,
+      {$set: body},
+      {new: true /*new:true is same returnOriginal:false*/}).then((todo) => {
+    res.send({todo});
+  }, (e) => {
+    res.status(400).send();
+  });
+
+});
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

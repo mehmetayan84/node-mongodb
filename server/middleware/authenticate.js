@@ -4,7 +4,7 @@ var authenticate = (req, res, next) => {
     var token = req.header('x-auth');
     User.findByToken(token).then((user) => {
         if(!user) {
-            return Promise.reject(); //to run the code inside the catch block
+            return Promise.reject(); //to run the code inside the below catch block
         }
         req.user = user;
         req.token = token;

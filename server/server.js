@@ -135,6 +135,7 @@ app.get('/users/me', authenticate, ( req, res) => {
 //
 // });
 //below part is the same as above commented part
+
 app.post('/users/login', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
 
@@ -143,7 +144,6 @@ app.post('/users/login', (req, res) => {
       res.header('x-auth', user.tokens[0].token).send(user);
     });
   }).catch((e) => res.status(400).send());
-
 });
 
 app.listen(port, () => {

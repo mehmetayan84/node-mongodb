@@ -108,6 +108,20 @@ UserSchema.statics.findByToken = function(token) {
 
 };
 
+UserSchema.methods.removeToken = function(token){
+    var user = this;
+    //$pull method remove specified property from mongodb object
+    //return to return promise
+    return user.update({
+       $pull: {
+           tokens: {
+               token
+           }
+       }
+    });
+
+}
+
 UserSchema.pre('save', function(next) {
    var user = this;
 
